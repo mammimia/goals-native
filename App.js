@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, FlatList, StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import GoalInput from './components/GoalInput';
 import GoalItem from './components/GoalItem';
 
@@ -21,34 +22,37 @@ export default function App() {
   };
 
   return (
-    <View style={styles.appContainer}>
-      <Button
-        title="Add New Goal"
-        color="#5e0acc"
-        onPress={() => setIsModalVisible(true)}
-      />
-      <GoalInput
-        addGoal={addGoalHandler}
-        visible={isModalVisible}
-        closeModal={() => setIsModalVisible(false)}
-      />
-      <View style={styles.goalsContainer}>
-        <FlatList
-          data={goals}
-          alwaysBounceVertical
-          keyExtractor={(item) => item.key}
-          renderItem={(itemData) => {
-            const { item } = itemData;
-            return (
-              <GoalItem
-                text={item?.text}
-                removeItem={() => removeGoalHandler(item?.key)}
-              />
-            );
-          }}
-        ></FlatList>
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#a065ec"
+          onPress={() => setIsModalVisible(true)}
+        />
+        <GoalInput
+          addGoal={addGoalHandler}
+          visible={isModalVisible}
+          closeModal={() => setIsModalVisible(false)}
+        />
+        <View style={styles.goalsContainer}>
+          <FlatList
+            data={goals}
+            alwaysBounceVertical
+            keyExtractor={(item) => item.key}
+            renderItem={(itemData) => {
+              const { item } = itemData;
+              return (
+                <GoalItem
+                  text={item?.text}
+                  removeItem={() => removeGoalHandler(item?.key)}
+                />
+              );
+            }}
+          ></FlatList>
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
