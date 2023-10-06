@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button, StyleSheet, TextInput, View } from 'react-native';
+import { Button, StyleSheet, TextInput, View, Modal } from 'react-native';
 
-const GoalInput = ({ addGoal }) => {
+const GoalInput = ({ addGoal, visible, closeModal }) => {
   const [enteredGoal, setEnteredGoal] = useState('');
 
   const goalInputHandler = (enteredText) => {
@@ -13,40 +13,58 @@ const GoalInput = ({ addGoal }) => {
 
     addGoal(enteredGoal);
     setEnteredGoal('');
+    closeModal();
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.textInput}
-        value={enteredGoal}
-        placeholder="Enter your goal!"
-        onChangeText={goalInputHandler}
-      />
-      <Button
-        title="Add Goal"
-        onPress={handleAddGoal}
-        disabled={enteredGoal?.length === 0}
-      />
-    </View>
+    <Modal visible={visible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          value={enteredGoal}
+          placeholder="Enter your goal!"
+          onChangeText={goalInputHandler}
+        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button
+              title="Add Goal"
+              onPress={handleAddGoal}
+              disabled={enteredGoal?.length === 0}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button title="Cancel" onPress={closeModal} />
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
+    padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc'
+  },
+  buttonContainer: {
+    marginTop: 16,
+    flexDirection: 'row'
+  },
+  button: {
+    width: 100,
+    marginHorizontal: 8
   },
   textInput: {
     borderWidth: 1,
     borderColor: '#ccc',
-    width: '70%',
-    marginRight: 8,
+    width: '100%',
     padding: 8
   }
 });
